@@ -48,3 +48,10 @@ main button {
 main button:hover {
     cursor: pointer;
 }
+
+.answer-button {
+    background-color: rgb(68, 68, 168);
+    width: 20%;
+    margin: 5px;
+    font-size: 1.5rem;
+}
