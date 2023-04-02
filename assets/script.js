@@ -4,16 +4,32 @@
 var questionText = document.getElementById("question")
 var hideElements = document.getElementsByClassName("hide")
 var main = document.getElementsByTagName("main")[0]
+var timer = document.getElementById("timer")
 var currentQuestion = 1
+var timeRemaining = 60
+var ans = ""
 
 var initializeQuiz = function () {
     for (var i=0; i< hideElements.length; i++) {
         hideElements[i].style.display = "none"
     }
 
+    timer.innerHTML = `Timer: ${timeRemaining}`
+
+    setInterval(() => {
+        if (timeRemaining < 1) {
+            console.log("You lose!")
+        }
+        timeRemaining -= 1
+        timer.innerHTML = `Timer: ${timeRemaining}`
+    }, 1000)
+
     questionText.innerHTML = questions[1].question
     for (var i=0; i < 4; i++) {
         var possibleAns = document.createElement("button")
+        possibleAns.addEventListener('click', (e) => {
+            ans = e.target.innerText
+        })
         possibleAns.innerText = questions[1][i+1]
         possibleAns.classList.add("answer-button")
         possibleAns.setAttribute('onclick',`iterateQuestion(${currentQuestion})`)
@@ -23,52 +39,60 @@ var initializeQuiz = function () {
 }
 
 var iterateQuestion = function(currentQuestion) {
+    if (ans) {
+        if (ans != questions[currentQuestion][questions[currentQuestion].correctAns]) {
+            console.log("Incorrect!")
+            timeRemaining -=5
+        }
+    }
     let nextQuestion = currentQuestion + 1
     questionText.innerHTML = questions[nextQuestion].question
     let buttons = document.querySelectorAll(".answer-button")
     for (var i=0; i < 4; i++) {
         buttons[i].innerText = questions[nextQuestion][i+1]
         buttons[i].setAttribute('onclick', `iterateQuestion(${nextQuestion})` )
-    }
-    
+    }  
 } 
-
-
 
 var questions = {
     1: {
-        question: "What's the answer to question 1?",
-        1: "A",
-        2: "B",
-        3: "C",
-        4: "D",
+        question: "Which of these is not a primitive type in JS?",
+        1: "String",
+        2: "Number",
+        3: "Boolean",
+        4: "Object",
+        correctAns: 4
     },
     2: {
-        question: "What's the answer to question 2?",
-        1: "E",
-        2: "F",
-        3: "G",
-        4: "H",
+        question: "The outer container syntax for arrays are:",
+        1: "Curly brackets",
+        2: "Angle brackets",
+        3: "Square brackets",
+        4: "Parentheses",
+        correctAns: 3
     },
     3: {
-        question: "What's the answer to question 3?",
-        1: "I",
-        2: "J",
-        3: "K",
-        4: "L",
+        question: "for...in... loops are primarily used to iterate through what?",
+        1: "Objects",
+        2: "Arrays",
+        3: "Strings",
+        4: "Numbers",
+        correctAns: 1
     },
     4: {
-        question: "What's the answer to question 4?",
-        1: "M",
-        2: "N",
-        3: "O",
-        4: "P",
+        question: "API stands for:",
+        1: "Apriori programming intelligence",
+        2: "Application programming iteration",
+        3: "Application programming interface",
+        4: "Argument producing iterator",
+        correctAns: 3
     },
     5: {
-        question: "What's the answer to question 5?",
-        1: "Q",
-        2: "R",
-        3: "S",
-        4: "T",
+        question: "DOM stands for:",
+        1: "Document object module",
+        2: "Document object model",
+        3: "Decrypted object model",
+        4: "Destructured object module",
+        correctAns: 2
     }
 }
