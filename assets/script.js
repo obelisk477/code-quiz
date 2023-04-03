@@ -57,7 +57,7 @@ var questions = {
         correctAns: 4
     },
     7: {
-        question: "The condition in an if/esle statement is enclosed with ______.",
+        question: "The condition in an if/else statement is enclosed with ______.",
         1: "Quotes",
         2: "Curly brackets",
         3: "Parentheses",
@@ -73,12 +73,12 @@ var questions = {
         correctAns: 2
     },
     9: {
-        question: "DOM stands for:",
-        1: "Document object module",
-        2: "Document object model",
-        3: "Decrypted object model",
-        4: "Destructured object module",
-        correctAns: 2
+        question: "Javascript was created by _______:",
+        1: "Brendan Eich",
+        2: "Bjarne Stroustrup",
+        3: "Satoshi Nakamoto ",
+        4: "Guido van Rossum",
+        correctAns: 1
     },
     10: {
         question: "A very useful tool used during development and debugging for printing content to the debugger is:",
@@ -86,7 +86,7 @@ var questions = {
         2: "Terminal / bash",
         3: "For loops",
         4: "Console.log",
-        correctAns: 2
+        correctAns: 4
     },
 }
 
@@ -132,6 +132,7 @@ var iterateQuestion = function(currentQuestion) {
             console.log("Incorrect!")
             timeRemaining -=5
             message.style.display = "inline"
+            score -= 1
         }
     }
     let nextQuestion = currentQuestion + 1
