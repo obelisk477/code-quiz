@@ -1,59 +1,12 @@
-
-
-
 var questionText = document.getElementById("question")
 var hideElements = document.getElementsByClassName("hide")
 var main = document.getElementsByTagName("main")[0]
 var timer = document.getElementById("timer")
 var currentQuestion = 1
 var timeRemaining = 60
+var timerInterval
 var ans = ""
-
-var initializeQuiz = function () {
-    for (var i=0; i< hideElements.length; i++) {
-        hideElements[i].style.display = "none"
-    }
-
-    timer.innerHTML = `Timer: ${timeRemaining}`
-
-    setInterval(() => {
-        if (timeRemaining < 1) {
-            console.log("You lose!")
-        }
-        timeRemaining -= 1
-        timer.innerHTML = `Timer: ${timeRemaining}`
-    }, 1000)
-
-    questionText.innerHTML = questions[1].question
-    for (var i=0; i < 4; i++) {
-        var possibleAns = document.createElement("button")
-        possibleAns.addEventListener('click', (e) => {
-            ans = e.target.innerText
-        })
-        possibleAns.innerText = questions[1][i+1]
-        possibleAns.classList.add("answer-button")
-        possibleAns.setAttribute('onclick',`iterateQuestion(${currentQuestion})`)
-        main.appendChild(possibleAns)
-    }
-
-}
-
-var iterateQuestion = function(currentQuestion) {
-    if (ans) {
-        if (ans != questions[currentQuestion][questions[currentQuestion].correctAns]) {
-            console.log("Incorrect!")
-            timeRemaining -=5
-        }
-    }
-    let nextQuestion = currentQuestion + 1
-    questionText.innerHTML = questions[nextQuestion].question
-    let buttons = document.querySelectorAll(".answer-button")
-    for (var i=0; i < 4; i++) {
-        buttons[i].innerText = questions[nextQuestion][i+1]
-        buttons[i].setAttribute('onclick', `iterateQuestion(${nextQuestion})` )
-    }  
-} 
-
+var score = 0
 var questions = {
     1: {
         question: "Which of these is not a primitive type in JS?",
@@ -94,5 +47,112 @@ var questions = {
         3: "Decrypted object model",
         4: "Destructured object module",
         correctAns: 2
+    },
+    6: {
+        question: "Arrays in JS can be used to store _______.",
+        1: "Numbers and strings",
+        2: "Other arrays",
+        3: "Booleans",
+        4: "All of the above",
+        correctAns: 4
+    },
+    7: {
+        question: "The condition in an if/esle statement is enclosed with ______.",
+        1: "Quotes",
+        2: "Curly brackets",
+        3: "Parentheses",
+        4: "Square brackets",
+        correctAns: 3
+    },
+    8: {
+        question: "String values must be enclosed within ______ when being assigned to variables",
+        1: "Commas",
+        2: "Curly brackets",
+        3: "Quotes",
+        4: "Parenthesis",
+        correctAns: 2
+    },
+    9: {
+        question: "DOM stands for:",
+        1: "Document object module",
+        2: "Document object model",
+        3: "Decrypted object model",
+        4: "Destructured object module",
+        correctAns: 2
+    },
+    10: {
+        question: "A very useful tool used during development and debugging for printing content to the debugger is:",
+        1: "Javascript",
+        2: "Terminal / bash",
+        3: "For loops",
+        4: "Console.log",
+        correctAns: 2
+    },
+}
+
+var quizLength = Object.keys(questions).length
+
+var initializeQuiz = function () {
+    for (var i=0; i< hideElements.length; i++) {
+        hideElements[i].style.display = "none"
     }
+
+    timer.innerHTML = `Timer: ${timeRemaining}`
+    timerInterval = setInterval(updateTimer, 1000)
+
+    questionText.innerHTML = questions[1].question
+    for (var i=0; i < 4; i++) {
+        var possibleAns = document.createElement("button")
+        possibleAns.addEventListener('click', (e) => {
+            ans = e.target.innerText
+        })
+        possibleAns.innerText = questions[1][i+1]
+        possibleAns.classList.add("answer-button")
+        possibleAns.setAttribute('onclick',`iterateQuestion(${currentQuestion})`)
+        main.appendChild(possibleAns)
+    }
+    var wrongAnswer = document.createElement("p")
+    wrongAnswer.innerText = "Wrong Answer!"
+    wrongAnswer.setAttribute("id","wrong-answer")
+    wrongAnswer.style.display = "none"
+    main.appendChild(wrongAnswer)
+}
+
+var iterateQuestion = function(currentQuestion) {
+    if (currentQuestion == quizLength) {
+        console.log("Hello world")
+        displayResultsPage(score)
+        return
+    }
+    var message = document.getElementById('wrong-answer')
+    message.style.display = "none"
+    score += 1
+    if (ans) {
+        if (ans != questions[currentQuestion][questions[currentQuestion].correctAns]) {
+            console.log("Incorrect!")
+            timeRemaining -=5
+            message.style.display = "inline"
+        }
+    }
+    let nextQuestion = currentQuestion + 1
+    questionText.innerHTML = questions[nextQuestion].question
+    let buttons = document.querySelectorAll(".answer-button")
+    for (var i=0; i < 4; i++) {
+        buttons[i].innerText = questions[nextQuestion][i+1]
+        buttons[i].setAttribute('onclick', `iterateQuestion(${nextQuestion})` )
+    }  
+} 
+
+var updateTimer = function() {
+    if (timeRemaining < 1) {
+        console.log("You lose!")
+        clearInterval(timerInterval)
+        return
+    }
+    timeRemaining -= 1
+    timer.innerHTML = `Timer: ${timeRemaining}`
+}
+
+var displayResultsPage = function () {
+    console.log(score)
 }
