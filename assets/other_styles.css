@@ -11,8 +11,11 @@ ol {
 
 ol li {
     display: list-item;
-    background-color: rgb(61, 5, 114, 0.3);
     padding: 4px 7px 5px;
+}
+
+ol li:nth-child(odd) {
+    background-color: rgb(61, 5, 114, 0.3);
 }
 
 button {
@@ -22,5 +25,5 @@ button {
     font-size: 1.rem;
     background-color: rgb(61, 5, 114);
     color: white;
-
 }
+
