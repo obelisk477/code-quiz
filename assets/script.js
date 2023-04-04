@@ -120,7 +120,6 @@ var initializeQuiz = function () {
 
 var iterateQuestion = function(currentQuestion) {
     if (currentQuestion == quizLength) {
-        console.log("Hello world")
         displayResultsPage(score)
         return
     }
@@ -155,5 +154,12 @@ var updateTimer = function() {
 }
 
 var displayResultsPage = function () {
-    console.log(score)
+    var buttons = document.querySelectorAll(".answer-button")
+    let para = document.querySelector("p.hide")
+    para.innerText = `Your final score is ${score}.`
+    questionText.innerText = "All done!"
+    para.style.display = "block"
+    for (let button of buttons) {
+        button.style.display = "none"
+    }
 }
