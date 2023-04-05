@@ -120,12 +120,22 @@ var initializeQuiz = function () {
 
 var iterateQuestion = function(currentQuestion) {
     if (currentQuestion == quizLength) {
+        if (ans) {
+            if (ans != questions[currentQuestion][questions[currentQuestion].correctAns]) {
+                console.log("Incorrect!")
+                timeRemaining -=5
+                message.style.display = "inline"
+                score -= 1
+            }
+        }
+        score += 1
         displayResultsPage(score)
         return
     }
     var message = document.getElementById('wrong-answer')
     message.style.display = "none"
     score += 1
+    
     if (ans) {
         if (ans != questions[currentQuestion][questions[currentQuestion].correctAns]) {
             console.log("Incorrect!")
@@ -157,6 +167,7 @@ var displayResultsPage = function () {
     var buttons = document.querySelectorAll(".answer-button")
     let para = document.querySelector("p.hide")
     para.innerText = `Your final score is ${score}.`
+    localStorage.setItem("score", score)
     questionText.innerText = "All done!"
     para.style.display = "block"
     for (let button of buttons) {
