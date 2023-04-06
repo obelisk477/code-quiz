@@ -124,8 +124,9 @@ var iterateQuestion = function(currentQuestion) {
         if (ans) {
             if (ans != questions[currentQuestion][questions[currentQuestion].correctAns]) {
                 timeRemaining -=5
-                timer.style.color = "red"
-                message.style.display = "inline"
+                // timer.style.color = "red"
+                // message.style.display = "inline"
+                flashElem(message, [['display', 'inline']])
                 score -= 1
             }
         }
@@ -139,8 +140,9 @@ var iterateQuestion = function(currentQuestion) {
     if (ans) {
         if (ans != questions[currentQuestion][questions[currentQuestion].correctAns]) {
             timeRemaining -=5
-            message.style.display = "inline"
-            flashTimer()
+            // message.style.display = "inline"
+            flashElem(message, [['display', 'inline']])
+            flashElem(timer, [['color','red'],['font-size','3rem'],['font-weight','bold']])
             score -= 1
         }
     }
@@ -198,19 +200,24 @@ var submitScore = function() {
 
 }
 
-var flashTimer = function() {
-    timer.style.color = "red"
-    timer.style.fontSize = "3rem"
-    timer.style.fontWeight = "bold"
+var flashElem = function(elem, transitionProps) {
+    var initialValues = []
+    let newTransitionProperty = []
+    transitionProps.forEach(prop => {
+        initialValues.push(getComputedStyle(elem)[prop[0]])
+        elem.style[prop[0]] = prop[1]
+        newTransitionProperty.push(prop[0])
+    });
+    console.log(initialValues)
     setTimeout(() => {
-        timer.style.transitionDuration = "1.5s"
-        timer.style.transitionProperty = "color, font-size"
-        timer.style.color = "black"
-        timer.style.fontSize = "1.75rem"
-        timer.style.fontWeight = "normal"
+        elem.style.transitionDuration = "1.5s"
+        elem.style.transitionProperty = newTransitionProperty.join(", ")
+        for (let i=0; i < initialValues.length; i++) {
+            elem.style[transitionProps[i][0]] = initialValues[i]
+        }
     }, 220)
     setTimeout(() => {
-        timer.style.transitionDuration = "0s"
-        timer.style.transitionProperty = "none"
+        elem.style.transitionDuration = "0s"
+        elem.style.transitionProperty = "none"
     }, 800)
 }
