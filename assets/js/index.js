@@ -124,6 +124,7 @@ var iterateQuestion = function(currentQuestion) {
         if (ans) {
             if (ans != questions[currentQuestion][questions[currentQuestion].correctAns]) {
                 timeRemaining -=5
+                timer.style.color = "red"
                 message.style.display = "inline"
                 score -= 1
             }
@@ -139,6 +140,7 @@ var iterateQuestion = function(currentQuestion) {
         if (ans != questions[currentQuestion][questions[currentQuestion].correctAns]) {
             timeRemaining -=5
             message.style.display = "inline"
+            flashTimer()
             score -= 1
         }
     }
@@ -155,6 +157,7 @@ var updateTimer = function() {
     if (timeRemaining < 1) {
         console.log("You lose!")
         clearInterval(timerInterval)
+        displayResultsPage(score)
         return
     }
     timeRemaining -= 1
@@ -162,6 +165,8 @@ var updateTimer = function() {
 }
 
 var displayResultsPage = function () {
+    timer.style.color = "black"
+    clearInterval(timerInterval)
     var buttons = document.querySelectorAll(".answer-button")
     let para = document.querySelector("p.hide")
     para.innerText = `Your final score is ${score}.`
@@ -169,15 +174,43 @@ var displayResultsPage = function () {
     scoreInput.setAttribute("type","text")
     let scoreInputLabel = document.createElement("label")
     scoreInputLabel.setAttribute("for","score-input")
+    let scoreInputButton = document.createElement("input")
+    scoreInputButton.setAttribute("value","Send")
+    scoreInputButton.setAttribute("type","submit")
+    scoreInputButton.setAttribute("onclick", "submitScore()")
     scoreInputLabel.innerHTML= "Enter initials"
     scoreInput.setAttribute("id","score-input")
     scoreInput.setAttribute("name","score-input")
     main.appendChild(scoreInputLabel)
     main.appendChild(scoreInput)
-    localStorage.setItem("score", JSON.stringify([1,2,3]))
+    main.appendChild(scoreInputButton)
     questionText.innerText = "All done!"
     para.style.display = "block"
     for (let button of buttons) {
         button.style.display = "none"
     }
+}
+
+var submitScore = function() {
+    let initials = document.getElementById("score-input").value
+    localStorage.setItem("score", JSON.stringify([initials, score]))
+    window.location.href = "../high-scores.html"
+
+}
+
+var flashTimer = function() {
+    timer.style.color = "red"
+    timer.style.fontSize = "3rem"
+    timer.style.fontWeight = "bold"
+    setTimeout(() => {
+        timer.style.transitionDuration = "1.5s"
+        timer.style.transitionProperty = "color, font-size"
+        timer.style.color = "black"
+        timer.style.fontSize = "1.75rem"
+        timer.style.fontWeight = "normal"
+    }, 220)
+    setTimeout(() => {
+        timer.style.transitionDuration = "0s"
+        timer.style.transitionProperty = "none"
+    }, 800)
 }

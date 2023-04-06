@@ -5,6 +5,8 @@
 header {
     display: flex;
     justify-content: space-between;
+    height: 100px;
+    align-items: center;
 }
 
 header a, header p {
@@ -17,6 +19,11 @@ header a:visited {
     margin: inherit;
     text-decoration: none;
 }
+
+/* #timer {
+    transition-property: color, font-size;
+    transition-duration: 2s;
+} */
 
 main {
     display: flex;
