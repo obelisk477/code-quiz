@@ -16,7 +16,7 @@ On the high scores screen, previous high scores as well as any recently submitte
 
 ## Screenshot
 
-![portfolio demo](./assets/images/CodingQuizSS.png)
+![quiz demo](./assets/images/CodingQuizSS.png)
 
 ## License
 
