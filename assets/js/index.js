@@ -1,7 +1,16 @@
 var questionText = document.getElementById("question")
-var hideElements = document.getElementsByClassName("hide")
 var main = document.getElementsByTagName("main")[0]
 var timer = document.getElementById("timer")
+var wrongAnswer = document.getElementById("wrong-answer")
+var startButton = document.querySelector("main button")
+var startText = document.querySelectorAll("main p")[0]
+var answers = document.querySelector(".answers")
+var form = document.querySelector("form")
+var answerOne = document.querySelectorAll(".answers button")[0]
+var answerTwo = document.querySelectorAll(".answers button")[1]
+var answerThree = document.querySelectorAll(".answers button")[2]
+var answerFour = document.querySelectorAll(".answers button")[3]
+let buttons = document.querySelectorAll(".answer-button")
 var currentQuestion = 1
 var timeRemaining = 60
 var timerInterval
@@ -89,44 +98,35 @@ var questions = {
         correctAns: 4
     },
 }
-
 var quizLength = Object.keys(questions).length
 
 var initializeQuiz = function () {
-    for (var i=0; i< hideElements.length; i++) {
-        hideElements[i].style.display = "none"
-    }
+    startButton.style.display = startText.style.display = "none"
 
     timer.innerHTML = `Timer: ${timeRemaining}`
     timerInterval = setInterval(updateTimer, 1000)
 
     questionText.innerHTML = questions[1].question
+    
+    answers.style.display = "flex"
     for (var i=0; i < 4; i++) {
-        var possibleAns = document.createElement("button")
-        possibleAns.addEventListener('click', (e) => {
+        buttons[i].innerText = questions[currentQuestion][i+1]
+        buttons[i].addEventListener('click', (e) => {
             ans = e.target.innerText
         })
-        possibleAns.innerText = questions[1][i+1]
-        possibleAns.classList.add("answer-button")
-        possibleAns.setAttribute('onclick',`iterateQuestion(${currentQuestion})`)
-        main.appendChild(possibleAns)
-    }
-    var wrongAnswer = document.createElement("p")
-    wrongAnswer.innerText = "Wrong Answer!"
-    wrongAnswer.setAttribute("id","wrong-answer")
-    wrongAnswer.style.display = "none"
-    main.appendChild(wrongAnswer)
+    }  
 }
 
 var iterateQuestion = function(currentQuestion) {
     var message = document.getElementById('wrong-answer')
+    console.log(ans)
     if (currentQuestion == quizLength) {
         if (ans) {
             if (ans != questions[currentQuestion][questions[currentQuestion].correctAns]) {
                 timeRemaining -=5
                 // timer.style.color = "red"
                 // message.style.display = "inline"
-                flashElem(message, [['display', 'inline']])
+                flashElem(message, [['display', 'inline']], 2.5)
                 score -= 1
             }
         }
@@ -141,8 +141,8 @@ var iterateQuestion = function(currentQuestion) {
         if (ans != questions[currentQuestion][questions[currentQuestion].correctAns]) {
             timeRemaining -=5
             // message.style.display = "inline"
-            flashElem(message, [['display', 'inline']])
-            flashElem(timer, [['color','red'],['font-size','3rem'],['font-weight','bold']])
+            flashElem(message, [['display', 'inline']], 2.5)
+            flashElem(timer, [['color','red'],['font-size','3rem'],['font-weight','bold']], 1.5)
             score -= 1
         }
     }
@@ -170,37 +170,25 @@ var displayResultsPage = function () {
     timer.style.color = "black"
     clearInterval(timerInterval)
     var buttons = document.querySelectorAll(".answer-button")
-    let para = document.querySelector("p.hide")
-    para.innerText = `Your final score is ${score}.`
-    let scoreInput = document.createElement("input")
-    scoreInput.setAttribute("type","text")
-    let scoreInputLabel = document.createElement("label")
-    scoreInputLabel.setAttribute("for","score-input")
-    let scoreInputButton = document.createElement("input")
-    scoreInputButton.setAttribute("value","Send")
-    scoreInputButton.setAttribute("type","submit")
-    scoreInputButton.setAttribute("onclick", "submitScore()")
-    scoreInputLabel.innerHTML= "Enter initials"
-    scoreInput.setAttribute("id","score-input")
-    scoreInput.setAttribute("name","score-input")
-    main.appendChild(scoreInputLabel)
-    main.appendChild(scoreInput)
-    main.appendChild(scoreInputButton)
+    startText.innerText = `Your final score is ${score}.`
     questionText.innerText = "All done!"
-    para.style.display = "block"
-    for (let button of buttons) {
-        button.style.display = "none"
-    }
+    var submitButton = document.querySelectorAll("form input")[1]
+    submitButton.addEventListener('click', () => {
+        submitScore()
+    })
+    form.style.display = "block"
+    startText.style.display = "block"
+    answers.style.display = "none"
 }
 
 var submitScore = function() {
-    let initials = document.getElementById("score-input").value
+    let initials = document.getElementById("submission").value
     localStorage.setItem("score", JSON.stringify([initials, score]))
     window.location.href = "../high-scores.html"
 
 }
 
-var flashElem = function(elem, transitionProps) {
+var flashElem = function(elem, transitionProps, duration) {
     var initialValues = []
     let newTransitionProperty = []
     transitionProps.forEach(prop => {
@@ -210,14 +198,14 @@ var flashElem = function(elem, transitionProps) {
     });
     console.log(initialValues)
     setTimeout(() => {
-        elem.style.transitionDuration = "1.5s"
+        elem.style.transitionDuration = duration + 's'
         elem.style.transitionProperty = newTransitionProperty.join(", ")
         for (let i=0; i < initialValues.length; i++) {
             elem.style[transitionProps[i][0]] = initialValues[i]
         }
-    }, 220)
+    }, duration*220)
     setTimeout(() => {
         elem.style.transitionDuration = "0s"
         elem.style.transitionProperty = "none"
-    }, 800)
+    }, duration*800)
 }
