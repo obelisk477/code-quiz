@@ -32,9 +32,11 @@ main {
 }
 
 h1 {
-    font-size: 3rem;
+    font-size: 2.25rem;
+    height: 150px;
     margin-top: 200px;
     margin-bottom: 0px;
+    text-align: center;
 }
 
 main p {

@@ -35,7 +35,7 @@ var questions = {
     3: {
         question: "for...in... loops are primarily used to iterate through what?",
         1: "Objects",
-        2: "Arrays",
+        2: "Booleans",
         3: "Strings",
         4: "Numbers",
         correctAns: function() {
@@ -89,7 +89,7 @@ var questions = {
         3: "Quotes",
         4: "Parenthesis",
         correctAns: function() {
-            return this[2]
+            return this[3]
         }
     },
     9: {
@@ -184,8 +184,16 @@ var displayResultsPage = function () {
 
 var submitScore = function() {
     let initials = document.getElementById("submission").value
-    localStorage.setItem("score", JSON.stringify([initials, score]))
-    window.location.href = "../high-scores.html"
+    try {
+        let highScores = JSON.parse(localStorage.getItem("scores"))
+        highScores[initials] = score
+        localStorage.setItem("scores",JSON.stringify(highScores))
+    } catch (e) {
+        let highScores = {}
+        highScores[initials] = score
+        localStorage.setItem("scores",JSON.stringify(highScores))
+    }
+    window.location.href = "./high-scores.html"    
 }
 
 var revertStyle = function() {

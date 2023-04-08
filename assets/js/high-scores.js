@@ -1,27 +1,20 @@
 var pullScores = function() {
-    if (!localStorage.getItem("high-scores")) {
-        localStorage.setItem("high-scores",JSON.stringify([]))
-        console.log("added")
-    }
-
-    let tempScore = JSON.parse(localStorage.getItem("score"))
-    let highScores = JSON.parse(localStorage.getItem("high-scores"))
-    if (!highScores.includes(tempScore)) {
-        // needs logic updated to check stringified temp score against all stringified current highscores
-        console.log(highScores.indexOf(tempScore))
-        console.log(tempScore)
-        highScores.push(tempScore)
-        localStorage.setItem("high-scores", JSON.stringify(highScores))
-    }
-
-
-
-
+    let highScores = JSON.parse(localStorage.getItem("scores"))
     let myList = document.getElementById("my-list")
 
-    for (let i=0; i < highScores.length; i++) {
+    for (let record in highScores) {
         let tempItem = document.createElement("li")
-        tempItem.innerText = highScores[i][0] + ' - ' +  highScores[i][1]
-        myList.append(tempItem)
+        tempItem.innerText = record.toUpperCase() + ' - ' + highScores[record]
+        myList.appendChild(tempItem)
     }
+}
+
+
+var goBack = function() {
+    window.location.href = "./index.html"
+}
+
+var clearScores = function() {
+    localStorage.removeItem("scores")
+    window.location.href = "./high-scores.html"
 }
