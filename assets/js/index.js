@@ -1,3 +1,4 @@
+// Grab needed HTML elements for scraping / modification
 var questionText = document.getElementById("question")
 var timer = document.getElementById("timer")
 var wrongAnswer = document.getElementById("wrong-answer")
@@ -6,6 +7,8 @@ var startText = document.querySelectorAll("main p")[0]
 var answers = document.querySelector(".answers")
 var form = document.querySelector("form")
 let buttons = document.querySelectorAll(".answer-button")
+
+// Initialize other variables
 var currentQuestion = 0
 var timeRemaining = 60
 var timerInterval
@@ -114,6 +117,7 @@ var questions = {
     },
 }
 
+// Sets up basic formatting & logic for quize and starts timer
 var initializeQuiz = function () {
     startButton.style.display = startText.style.display = "none"
     timer.innerHTML = `Timer: ${timeRemaining}`
@@ -126,6 +130,8 @@ var initializeQuiz = function () {
     iterateQuestion()
 }
 
+
+// Main function for iterating through question list and tracking score
 var iterateQuestion = function(event) {
     try {
         ans = event.target.innerHTML
@@ -158,6 +164,7 @@ var iterateQuestion = function(event) {
     }
 } 
 
+// Main function for controlling timer value
 var updateTimer = function() {
     if (timeRemaining < 1) {
         clearInterval(timerInterval)
@@ -168,6 +175,7 @@ var updateTimer = function() {
     timer.innerHTML = `Timer: ${timeRemaining}`
 }
 
+// Results page that's called when the time runs out or the questions are done
 var displayResultsPage = function () {
     timer.style.color = "black"
     clearInterval(timerInterval)
@@ -182,6 +190,8 @@ var displayResultsPage = function () {
     answers.style.display = "none"
 }
 
+
+// Function for button to save highscore results to local storage
 var submitScore = function() {
     let initials = document.getElementById("submission").value
     try {
@@ -196,6 +206,7 @@ var submitScore = function() {
     window.location.href = "./high-scores.html"    
 }
 
+// Helper function to revert wrong answer and timer styles after fixed time period
 var revertStyle = function() {
     wrongAnswer.style.display = "none"
     timer.style.color = "black"

@@ -1,3 +1,4 @@
+// Grabs scores from local storage and renders high score list
 var pullScores = function() {
     let highScores = JSON.parse(localStorage.getItem("scores"))
     let myList = document.getElementById("my-list")
@@ -10,6 +11,7 @@ var pullScores = function() {
 }
 
 
+// Functions for 'go back' and 'clear' buttons
 var goBack = function() {
     window.location.href = "./index.html"
 }
