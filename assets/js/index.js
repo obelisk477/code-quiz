@@ -190,10 +190,16 @@ var displayResultsPage = function () {
     answers.style.display = "none"
 }
 
-
 // Function for button to save highscore results to local storage
 var submitScore = function() {
-    let initials = document.getElementById("submission").value
+    let initials = String(document.getElementById("submission").value).trim().toUpperCase()
+    if (!initials) {
+        alert("No initials entered")
+        return
+    } else if (initials.match(/^[A-Z]{2,4}$/) == null) {
+        alert("Invalid initial format")
+        return
+    }
     try {
         let highScores = JSON.parse(localStorage.getItem("scores"))
         highScores[initials] = score
@@ -203,6 +209,7 @@ var submitScore = function() {
         highScores[initials] = score
         localStorage.setItem("scores",JSON.stringify(highScores))
     }
+    
     window.location.href = "./high-scores.html"    
 }
 
